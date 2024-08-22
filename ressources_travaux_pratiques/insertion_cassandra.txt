@@ -1,0 +1,16 @@
+INSERT INTO Mecanicien (idmecano, nom, prenom, status) VALUES (1,'Dupont','Jean','CDI');
+INSERT INTO Mecanicien (idmecano, nom, prenom, status) VALUES (2,'Durant','Paul','CDD');
+INSERT INTO Mecanicien (idmecano, nom, prenom, status) VALUES (3,'Turpin','Guy','CDI');
+INSERT INTO Mecanicien (idmecano, nom, prenom, status) VALUES (4,'Clarenne','Jordan','stagiaire');
+INSERT INTO Mecanicien (idmecano, nom, prenom, status) VALUES (5,'Magnier','Martin','interim');
+INSERT INTO Mecanicien (idmecano, nom, prenom, status) VALUES (6,'Maugan','Pascal','CDI');
+INSERT INTO Mecanicien (idmecano, nom, prenom, status) VALUES (7,'Darius','Gerald','CDD');
+INSERT INTO Mecanicien (idmecano, nom, prenom, status) VALUES (8,'Avezard','Thomas','CDI');
+
+INSERT INTO Vehicule (idvehicule, marque, modele, kilometrage, mecano) VALUES (1,'Renault','clio',58600,3);
+INSERT INTO Vehicule (idvehicule, marque, modele, kilometrage, mecano) VALUES (2,'Peugeot','206',46871,2);
+INSERT INTO Vehicule (idvehicule, marque, modele, kilometrage, mecano) VALUES (3,'Peugeot','607',78954,1);
+INSERT INTO Vehicule (idvehicule, marque, modele, kilometrage, mecano) VALUES (4,'Citroen','Xsara',125680,2);
+INSERT INTO Vehicule (idvehicule, marque, modele, kilometrage, mecano) VALUES (5,'Renault','Megane',10265,6);
+INSERT INTO Vehicule (idvehicule, marque, modele, kilometrage, mecano) VALUES (6,'Peugeot','107',68420,7);
+INSERT INTO Vehicule (idvehicule, marque, modele, kilometrage, mecano) VALUES (7,'Citroen','C3',89845,5);

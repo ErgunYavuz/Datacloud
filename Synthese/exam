@@ -1,0 +1,137 @@
+Exo 2
+=====
+
+1 : B, C
+2 : A, D    (si 1 serveur. sinon, aucune réponse fausse)
+3 : C, D
+4 : A       (pas la D car centralise uniquement les req d'écriture, et ne fait
+            pas de répartion de charge)
+5 : B
+6 : B, C, D
+7 : A       (HMaster stocke méta des méta données, Zoopkeer surveille l'état)
+8 : B
+9 : B, C    (compromis entre AP et CP) 
+10 : A, C
+
+Exo 3
+=====
+
+1.
+
+5 réplicas => QUOROM = 5/2 + 1
+
+INSERT on envoie la requete insert au système et on attends 3 ack
+SELECT on redemande à 3 noeuds la donnée, et on récupère la plus récente
+
+2, 3, 4/
+
+object Dixheures extends App {
+    val sc = new SparkContext(new SparkConf().setAppName("DixHeures")
+                .setMaster(this.args()
+                .set("spark.cassandra.connection.host", this.args(1)))
+    
+    case class User(iduser: String, mail: String, birthyear: Int)
+    case class Track(idtrack: String, title: String, duration: Int, author: String)
+    case class Favorite(iduser: String, idtrack: String)
+    case class Artiste(idartist: String, biography: String)
+
+    def loadUsers():RDD[User] = sc.cassandraTable("dixheures", "User")
+    def loadTracks():RDD[Track] = sc.cassandraTable("dixheures", "Track")
+    def loadFavorites():RDD[Favorite] = sc.cassandraTable("dixheures", "Favorite")
+    def loadArtistes():RDD[Artiste] = sc.cassandraTable("dixheures", "Favorite")
+
+    def addFavorite(f: Favorite) = sc.parallelize(Seq(f), 1)
+                .saveToCassandra("dixheures", "Favorite", AllColumns)
+
+    def getAverageListenerAgePerNameArtist(): RDD[(String, Double)] = {
+        val artists = loadArtistes()
+        val favorites = loadFavorites()
+        val tracks = loadTracks()
+        val users = loadUsers()
+
+        val curyear = LocalDate.now().getYear
+
+        val rdd_idtrack_artist = tracks.map(t=>(t.idtrack, t.author))
+        val rdd_login_track = favorites.map(t=>(t.iduser, t.idtrack))
+        val rdd_login_idtrack_age  = rdd_login_track
+                                    .join(
+                                        users.map(u=>u.iduser, curyear - u.birthyear)
+                                    )
+        
+        val rdd_idtrack_age = rdd_login_idtrack_age.map(_._2)
+        val rdd_idtrack_idartist_age = artists.map(a=>(a.idartist, a.name))
+                                            .join(
+
+                                            )
+        val rdd_idartist_age = rdd_idtrack_idartist_age.map(_._2)
+
+        val rdd_idartist_nameartist_age = artists.map(a=>(a.idartist, a.name)).join(rdd_idartist_age)
+
+        val rdd_nameartist_age = rdd_idartist_nameartist_age.map(_._2)
+
+        return rdd_nameartist_age
+            .mapValues((_,1))
+            .reduceByKey((c1, c2) -> (c1._1 + c2._1, c1._2 + c2._2))
+            .mapValues(c=>c._1.toDouble/c._2.toDouble)
+
+    }
+}
+
+5/
+
+Ajouter une colonne "agemoyen" dans Artist et recalculer l'age moyen courant à 
+chaque ajout d'un Favori
+
+6/
+
+rowkey : idtrack
+1 columnFamily, où chaque colonne correspond à un idser, dont la value est son
+temps d'écoute cumulé
+
+7/
+
+RDD[(ImmutableBytesWritable, Result)]
+Identifiatn de ligne, avec l'ensemble des données de la lignes (colonnes)
+Une partition du RDD = une régoin de HBase
+
+Pour chaque partition du RDD qu'on veut écrire, on créée une connexion avec
+HBase, et on applique les Mutation (pour les put et delete, on les bufferise
+pour économiser les messages)
+
+
+object Stream exetends App {
+    val conf = new SparkConf().setAppName("Stream Listening")
+    val sc = new SparkContext(conf)
+
+    val ssc = StreamingContext(sc, Munites(5))
+
+    val stream1 = ssc.socketTextStream("listentstat.dixheures.com", 532)
+
+    val stream2 = stream1.map( s => s.split(" ").map(a=>(a(0), a(1), a(3).toInt - a(2).toInt)))
+
+    val stream3 = stream2.map(
+        t=> new Increment(Bytes.toBytes(t._2))
+            .addColumn(Bytes.toBytes("cf"), Bytes.toBytes(t._1), t._3)
+        )
+    
+    stream3.foreachRDD(rdd=>rdd.saveAsHbaseTable("ListeningStat", "zoo1:zoo2:zoo3"))
+
+    ssc.start()
+    ssc.awaitTerminaison()
+}
+
+8/
+
+def trackRanking(): RDD[(String, Long)] = {
+    val table_listening = sc.hbaseTableRDD("ListeningStat", new Scan(), "zoo1:zoo2:zoo3")
+    
+    val rdd_idtrack_cumullistening = table_listening.map (
+        c => (Bytes.toString(c._1.get)), 
+        c._2.getFamilyMap(Bytes.toBytes("cf").values().asScala
+            .map(Bytes.toLong(_)).reduce(_+_))
+    )
+
+    val rdd_idtrack_cumullistening_sorted = rdd_idtrack_cumullistening.sortBy(_._2, false)
+    val rdd_idtrack_titre = loadTracks().map(t=> (t.idtrack, t.title));
+    return rdd_idtrack_titre.join(rdd_idtrack_cumullistening_sorted).map(_._2)
+}

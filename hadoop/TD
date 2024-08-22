@@ -1,0 +1,198 @@
+Map(<TypeCléMap> key, <TypeValeurMap> value) {
+    
+}
+
+Reduce(<TypeCléReduce> key, liste de <TypeValeurReduce> values) {
+    
+}
+
+IdReduce getPartition(<TypeCléReduce> key, <TypeValeurMap> value,
+                                            entier nbReduce) {
+    
+}
+
+int compare(<TypeCléReduce> key1, <TypeCléReduce> key2) {
+    
+}
+
+================================================================================
+
+Exo 1 
+=====
+
+1/
+
+Map(<int> key, <string> value) {
+    //key : id de la ligne
+    //value : contenu de la ligne
+    
+    Si la vente a été réalisée en 2018
+        Emit(année, prix)
+}
+
+Reduce(<string> key, liste de <float> values) {
+    //key : année de vente
+    //value : liste des prix de vente
+    
+    int total = 0
+    pour tout i dans values:
+        total += i
+    Emit(key, count)
+}
+
+2/
+
+Map(<int> key, <string> value) {
+    //key : id de la ligne
+    //value : contenu de la ligne
+    
+    Emit(catégorie de produit, prix de vente)
+}
+
+Reduce(<string> key, liste de <float> values) {
+    //key : catégorie du produit
+    //value : liste des prix de vente
+    
+    int total = 0
+    pour tout i dans values:
+        total += i
+    Emit(key, count)
+}
+
+3/
+
+Map(<int> key, <string> value) {
+    //key : id de la ligne
+    //value : contenu de la ligne
+    
+    Emit(catégorie de produit, dénomination du produit)
+}
+
+Reduce(<string> key, liste de <string> values) {
+    //key : catégorie du produit
+    //value : liste des dénominations de produits
+    
+    map<string, int> compteurs = new map<>();
+    
+    pour tout p dans values:
+        si p non présent dans compteurs:
+            compteurs.put(p, 1)
+        sinon
+            compteurs.set(p) = compteurs.get(p) + 1;
+
+    Emit(key, compteurs.getKeyAssociatedToMaxValue())
+}
+
+Exo 2
+=====
+
+1/
+
+Map(<int> key, <string> value) {
+    //key : id de la ligne
+    //value : contenu de la ligne
+    
+    string hour = value.getHour();
+    string tranche = ""
+    if (key.getMinutes() > 29) 
+        tranche = "entre " + hour + "h30 et +" h59"
+    else
+        tranche = "entre " + hour + "h00 et +" h29"
+    
+    Emit(tranche, mot clé)
+}
+
+Reduce(<string> key, liste de <string> values) {
+    //key : tranche horraire de la connexion
+    //value : liste des mots clés dans values
+    
+    map<string, int> compteurs = new map<>();
+    m_max = values.get(0);
+    m_cpt = 1;
+    
+    pour tout m dans values:
+        si m non présent dans compteurs:
+            compteurs.put(m, 1)
+        sinon
+            compteurs.set(m) = compteurs.get(m) + 1;
+            if compteurs.get(m) > m_cpt:
+                m_max = m
+
+    Emit(key, m_max + " " + m_cpt);
+}
+
+1/
+
+Map(<int> key, <string> value) {
+    //key : id de la ligne
+    //value : contenu de la ligne
+    
+    string hour = value.getHour();
+    string tranche = ""
+    if (key.getMinutes() > 29) 
+        tranche = "entre " + hour + "h30 et +" h59"
+    else
+        tranche = "entre " + hour + "h00 et +" h29"
+    
+    Emit(value.getMonth() + " " + tranche, mot clé)
+}
+
+getPartition(string key, string value) {
+    return key.getMonth().toInt();
+}
+
+Exo 3
+=====
+
+1/
+
+Map(<int> key, <string> value) {
+    //key : id de la ligne
+    //value : contenu de la ligne
+    
+    si (local + radio > 0)
+        Emit(trackid, 1)
+}
+
+Reduce(<string> key, liste de <int> values) {
+    //key : trackid
+    //value : cpt
+
+    Emit(trackid, cpts.size());
+}
+
+2/
+
+Map(<int> key, <string> value) {
+    //key : id de la ligne
+    //value : contenu de la ligne
+    
+    emit(trackid, (local + radio, skip));
+}
+
+Reduce(<string> key, liste de <int, int> values) {
+    //key : trackid
+    //value : (cpt, cpt)
+    (int, int) res = (0, 0)
+
+    pour i dans values
+        res = res + i
+
+    emit(trackid, res)
+}
+
+3/
+
+Map1(<int> key, <string> value) {
+    //key : id de la ligne
+    //value : contenu de la ligne
+    
+    emit(trackid, (listener, 0, 0));
+}
+
+Map2(<int> key, <string> value) {
+    //key : id de la ligne
+    //value : contenu de la ligne
+    
+    emit(trackid, (0, listening, skip));
+}

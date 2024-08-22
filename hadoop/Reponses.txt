@@ -1,0 +1,35 @@
+Exercice 1
+==========
+
+
+4/
+Deux containers sont lancés.
+
+5/
+Un fichier _SUCCESS et un fichier part-r-00000 ont été créés. Ce dernier 
+contient le résultat du Map-Reduce WordCount sur le fichier loremIpsum-170.
+
+6/
+Avec loremIpsum-170, 2 tâches de Map et 1 tâche de Reduce ont été lancés.
+
+7/
+Avec loremIpsum-20, 1 tâche de Map et 1 tâche de Reduce ont été lancés.
+
+8/
+Avec /HDFS/loremIpsum-20, 1 tâche de Map et 1 tâche de Reduce ont été lancés.
+Avec /HDFS/loremIpsum-150, 2 tâche de Map et 1 tâche de Reduce ont été lancés.
+
+9/
+
+
+10/
+Avec /HDFS/loremIpsum-140, 1 tâche de Map et 1 tâche de Reduce ont été lancés.
+
+11/
+La taille des splits est gérée par les variables minSize et maxSize.
+
+12/
+
+
+13/
+Même nombre de maps.

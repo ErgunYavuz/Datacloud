@@ -1,0 +1,28 @@
+{
+	"compiler":"scalac",
+	"optscompiler":"-language:implicitConversions",
+	"command":"scala",
+	"exercices":{
+		 "1-Prise en main de l’interface Spark-Hbase":{
+		 	"required":[
+				"datacloud/synthese/LastFmUtil.scala",
+				"datacloud/synthese/HbaseSparkUtil.scala"
+				],
+			"tests":[
+				"datacloud.synthese.tests.LastfmSparkHbaseTest",
+				"datacloud.synthese.tests.CopyTableTest"
+			]
+		 },
+		 "2-Immatriculations de voitures":{
+		 	"required":[
+				"datacloud/synthese/ImmatUtil.scala"
+				],
+			"tests":[
+				"datacloud.synthese.tests.LastfmSparkHbaseTest",
+				"datacloud.synthese.tests.ChangeAdresseTest",
+				"datacloud.synthese.tests.Top3Test",
+				"datacloud.synthese.tests.TracingTest"
+			]
+		 }
+	 }
+}

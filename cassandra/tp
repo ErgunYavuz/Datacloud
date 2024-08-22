@@ -1,0 +1,27 @@
+import com.datastax.spark._
+import org.apache.spark.sql.cassandra._
+import com.datastax.spark.connector._
+
+case class Mecanicien(idmecano: Int, nom: String, prenom: String, status:String)
+case class Vehicule(idvehicule: Int, kilometrage: Int, marque: String, modele: String, mecano: Int)
+case class Reparation(idvehicule: Int, kilometrage: Int, marque: String, modele: String, mecano: Int, nom: String, prenom: String, status:String)
+
+=================== Q1
+
+val rdd_mec = sc.cassandraTable[Mecanicien]("garage", "mecanicien")
+val rdd_mec_cpy = sc.parallelize(rdd_mec.collect)
+rdd_mec_cpy.saveToCassandra("garage", "mecanicien_cpy")
+
+=================== Q2
+
+val rdd_mec = sc.cassandraTable[Mecanicien]("garage", "mecanicien")
+val rdd_vec = sc.cassandraTable[Vehicule]("garage", "vehicule")
+
+val rdd_mec2 = rdd_mec.map(m => (m.idmecano, m))
+val rdd_vec2 = rdd_vec.map(v => (v.mecano, v))
+
+val rdd_join = rdd_mec2.join(rdd_vec2).map(_._2)
+
+val rdd_reparation = rdd_join.map(c => new Reparation(c._2.idvehicule, c._2.kilometrage, c._2.marque, c._2.modele, c._2.mecano, c._1.nom, c._1.prenom, c._1.status))
+
+rdd_reparation.saveToCassandra("garage", "reparation")

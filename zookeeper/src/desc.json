@@ -1,0 +1,34 @@
+{
+	"compiler":"javac",
+	"command":"java",
+	"exercices":{
+	 "1-Membership":{
+	 	"required":[
+			"datacloud/zookeeper/membership/ClientMembership.java"
+		],
+		"tests":[
+			"datacloud.zookeeper.tests.ZkClientMembershipTest"
+		]
+	 },
+	 "2-Barriere de synchronisation":{
+	 	"required":[
+			"datacloud/zookeeper/barrier/SimpleBarrier.java",
+			"datacloud/zookeeper/barrier/BoundedBarrier.java"
+		],
+		"tests":[
+			"datacloud.zookeeper.tests.BoundedBarrierTest"
+		]
+	 },
+	 "3-Diffusion de messages":{
+	 	"required":[
+			"datacloud/zookeeper/pubsub/Publisher.java",
+			"datacloud/zookeeper/pubsub/Subscriber.java"
+		],
+		"tests":[
+			"datacloud.zookeeper.tests.PubsubTest"
+		]
+	 }
+	 
+	 
+	}	
+}

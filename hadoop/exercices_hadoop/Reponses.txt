@@ -1,0 +1,32 @@
+Exercice 1
+==========
+
+
+4/
+Deux containers sont lancés.
+
+5/
+Un fichier _SUCCESS et un fichier part-r-00000 ont été créés. Ce dernier 
+contient le résultat du Map-Reduce WordCount sur le fichier loremIpsum-170.
+
+6/
+Avec loremIpsum-170, 2 tâches de Map et 1 tâche de Reduce ont été lancés.
+
+7/
+Avec loremIpsum-20, 1 tâche de Map et 1 tâche de Reduce ont été lancés.
+
+8/
+3 tâche de Map et 1 tâche de Reduce ont été lancés.
+
+9/
+taille totale des données à traiter / 128 = nombre de split = nombre de mapper
+
+10/
+2 tâches de Map et 1 tâche de Reduce ont été lancés.
+
+12/
+Hadoop créée des mappers pour chaque petit fichier. Cela permet de ne pas 
+pénaliser leur traitement par ceux des plus gros fichiers, excédant 128Mo.
+
+13/
+3 maps ont été lancés au lieu de 2

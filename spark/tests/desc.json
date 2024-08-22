@@ -1,0 +1,43 @@
+{
+	"compiler":"scalac",
+	"optscompiler":"-language:implicitConversions",
+	"command":"scala",
+	"exercices":{
+	 "1-StereoPrix":{
+	 	"required":[
+			"datacloud/spark/core/stereoprix/Stats.scala"
+
+		],
+		"tests":[
+			"datacloud.spark.core.stereoprix.test.ChiffreAffaireTest",
+			"datacloud.spark.core.stereoprix.test.ChiffreAffaireParCategorieTest",
+			"datacloud.spark.core.stereoprix.test.ProduitLePlusVenduParCategorieTest"
+		]
+	 },
+	 "2-Hit Parade de Last.fm":{
+	 	"required":[
+			"datacloud/spark/core/lastfm/HitParade.scala"
+		],
+		"tests":[
+			"datacloud.spark.core.lastfm.test.HitParadeTest"
+		]
+	 },
+	 "3-Calcul matriciel":{
+	 	"required":[
+			"datacloud/spark/core/matrix/MatrixIntAsRDD.scala",
+			"datacloud/scala/tpobject/vector/VectorInt.scala"
+		],
+		"tests":[
+			"datacloud.spark.core.matrix.test.MakingTest",
+			"datacloud.spark.core.matrix.test.GetterTest",
+			"datacloud.spark.core.matrix.test.EqualsTest",
+			"datacloud.spark.core.matrix.test.PlusTest",
+			"datacloud.spark.core.matrix.test.TransposeTest",
+			"datacloud.spark.core.matrix.test.FoisTest"
+		]
+	 }	 
+	 
+	}
+	
+	
+}

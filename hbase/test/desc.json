@@ -1,0 +1,33 @@
+{
+	"compiler":"scalac",
+	"optscompiler":"-language:implicitConversions",
+	"command":"scala",
+	"exercices":{
+		 "1-Creation, suppression, lecture et ecriture":{
+		 	"required":[
+				"datacloud/hbase/HbaseClient.scala"
+				],
+			"tests":[
+				"datacloud.hbase.tests.HbaseClientCreateDeleteTest",
+				"datacloud.hbase.tests.HbaseClientReadWriteTest"
+			]
+		 },
+		 "2-LastFM : Remplissage d’une table":{
+		 	"required":[
+				"datacloud/hbase/LastfmFilling.scala"
+				],
+			"tests":[
+				"datacloud.hbase.tests.LastfmFillingTest"
+			]
+		 },
+		 "3-Jointures et denormalisation":{
+		 	"required":[
+				"datacloud/hbase/Stereoprix.scala"
+				],
+			"tests":[
+				"datacloud.hbase.tests.NbVenteParCategorieTest",
+				"datacloud.hbase.tests.DenormaliseTest"
+			]
+		 }
+	 }
+}
